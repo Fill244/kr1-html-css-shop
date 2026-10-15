@@ -10,6 +10,12 @@ const closeDialogButton = document.getElementById('close-order-dialog');
 // Получаем скрытое поле, в которое будет записан выбранный товар.
 const selectedProductInput = document.getElementById('selected-product');
 
+// Получаем текст, в котором показывается название выбранного товара.
+const dialogProductName = document.getElementById('order-dialog-product-name');
+
+// Получаем кнопку «×» в заголовке модального окна.
+const closeDialogIconButton = document.getElementById('close-order-dialog-icon');
+
 // Перебираем все кнопки «Заказать».
 orderButtons.forEach((button) => {
   button.addEventListener('click', () => {
@@ -19,6 +25,9 @@ orderButtons.forEach((button) => {
     // Записываем название товара в скрытое поле формы.
     selectedProductInput.value = productName;
 
+    // Показываем название товара в модальном окне.
+    dialogProductName.textContent = productName;
+
     // Открываем модальное окно.
     orderDialog.showModal();
   });
@@ -27,6 +36,25 @@ orderButtons.forEach((button) => {
 // Закрываем модальное окно по кнопке «Закрыть».
 closeDialogButton.addEventListener('click', () => {
   orderDialog.close();
+});
+
+// Закрываем модальное окно по кнопке «×».
+closeDialogIconButton.addEventListener('click', () => {
+  orderDialog.close();
+});
+
+// Закрываем модальное окно по клику на затемнённый фон.
+orderDialog.addEventListener('click', (event) => {
+  const rect = orderDialog.getBoundingClientRect();
+  const isOutside =
+    event.clientX < rect.left ||
+    event.clientX > rect.right ||
+    event.clientY < rect.top ||
+    event.clientY > rect.bottom;
+
+  if (isOutside) {
+    orderDialog.close();
+  }
 });
 // Получаем форму заявки.
 const orderForm = document.getElementById('order-form');
